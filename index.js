@@ -1,7 +1,7 @@
 var InfluxRequest = require('./lib/InfluxRequest.js')
 var url = require('url')
 var _ = require('lodash')
-var intRe = /\d+i$/
+var intRe = /^\d+i$/
 
 var defaultOptions = {
   hosts: [],
