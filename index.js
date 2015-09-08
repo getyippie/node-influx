@@ -246,7 +246,12 @@ InfluxDB.prototype.dropUser = function (username, callback) {
 InfluxDB.prototype._createKeyValueString = function (object) {
   return _.map(object, function (value, key) {
     if (typeof value === 'string') {
-      return key + '="' + value + '"'
+      if (intRe.test(value)) {
+        // Influxdb 0.9.3: To write a field value as an integer, a trailing i must be added when the point is being inserted.
+        return key + '=' + value
+      } else {
+        return key + '="' + value + '"'
+      }
     } else {
       return key + '=' + value
     }
