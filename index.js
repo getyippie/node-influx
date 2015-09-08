@@ -260,6 +260,7 @@ InfluxDB.prototype._createKeyTagString = function (object) {
 }
 
 InfluxDB.prototype._prepareValues = function (series) {
+  var intRe = /\d+i$/
   var output = []
   _.forEach(series, function (values, seriesName) {
     _.each(values, function (points) {
@@ -284,7 +285,12 @@ InfluxDB.prototype._prepareValues = function (series) {
         }
       } else {
         if (typeof points[0] === 'string') {
-          line += ' value="' + points[0] + '"'
+          if (intRe.test(points[0])) {
+            // Influxdb 0.9.3: To write a field value as an integer, a trailing i must be added when the point is being inserted.
+            line += ' value=' + points[0]
+          } else {
+            line += ' value="' + points[0] + '"'
+          }
         } else {
           line += ' value=' + points[0]
         }
