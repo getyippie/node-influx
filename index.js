@@ -1,6 +1,7 @@
 var InfluxRequest = require('./lib/InfluxRequest.js')
 var url = require('url')
 var _ = require('lodash')
+var intRe = /\d+i$/
 
 var defaultOptions = {
   hosts: [],
@@ -265,7 +266,6 @@ InfluxDB.prototype._createKeyTagString = function (object) {
 }
 
 InfluxDB.prototype._prepareValues = function (series) {
-  var intRe = /\d+i$/
   var output = []
   _.forEach(series, function (values, seriesName) {
     _.each(values, function (points) {
